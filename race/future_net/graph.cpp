@@ -117,9 +117,10 @@ gnode_t * graph_next_adj(graph_t *graph, int vx, int vy)
 	if (NULL == p || NULL == p->next)
 		return NULL;
 
-	return p;
+	return p->next;
 }
 
+//-------------图的入口----------dfs起始�?------------必经点顺�?--------权重�?----已过V'中点�?--V'中点总数
 int graph_dfs(graph_t *graph, gnode* start_gnode, int vpath[], int vpathIndex, int cost, int cvMNum, int vmustNum)
 {
 	gnode_t * gnode = NULL;
@@ -129,10 +130,9 @@ int graph_dfs(graph_t *graph, gnode* start_gnode, int vpath[], int vpathIndex, i
 
 	//printf(" V%d,", start);
 	
-	if(start_gnode->nodeIndex == t){
-		if(cvMNum == vmustNum){
-			printf("find one way!:");
-			for(int i = 0; i < *vpathIndex; i++){
+	if(start_gnode->nodeIndex == t){//dfs起始点等于终点t
+		if(cvMNum == vmustNum){//已过V'中点数等于V'总点�?			printf("find one way!:");
+			for(int i = 0; i < vpathIndex; i++){
 				printf("%d->",vpath[i]);
 			}
 			printf("\b\b  !\n");
@@ -145,8 +145,7 @@ int graph_dfs(graph_t *graph, gnode* start_gnode, int vpath[], int vpathIndex, i
 		cvMNum++;
 	}
 
-	cost += start_gnode->weight;
-	vpath[(vpathIndex++] = start_gnode->edgeIndex
+	cost += start_gnode->weight;//访问该节点，权重增加相应�?	vpath[(vpathIndex++] = start_gnode->edgeIndex//
 	gnode = graph_first_adj(graph, start);
 
 	while (gnode != NULL) {
